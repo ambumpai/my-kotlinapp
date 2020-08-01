@@ -23,15 +23,26 @@ class HomeActivity : AppCompatActivity()
     private lateinit var mHomeActivityBinding: ActivityHomeBinding
     private var aTag="HomeActivity"
 
+    enum class AlertDialogTypeEnum
+    {
+        NETWORK_ERROR, APP_EXIT_CONFRM
+    }
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        mHomeActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
-        mHomeActivityViewModel = ViewModelProviders.of(this).get(HomeActivityViewModel::class.java)
-        mHomeActivityBinding.viewModel = mHomeActivityViewModel
-        mHomeActivityBinding.lifecycleOwner = this
-        initializeViews()      // initilizing views
-        initializeObservers()  // observes the changes in data
+        try {
+
+            mHomeActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+            mHomeActivityViewModel = ViewModelProviders.of(this).get(HomeActivityViewModel::class.java)
+            mHomeActivityBinding.viewModel = mHomeActivityViewModel
+            mHomeActivityBinding.lifecycleOwner = this
+            initializeViews()      // initilizing views
+            initializeObservers()  // observes the changes in data
+
+        }catch (e : Exception)
+        {
+            Log.e("$aTag  onCreate",e.toString())
+        }
     }
     private fun initializeViews()
     {
@@ -60,36 +71,59 @@ class HomeActivity : AppCompatActivity()
                     if (bt==true)
                     {
                         mHomeActivityBinding.progressBar.visibility = View.VISIBLE
-                        mHomeActivityBinding.floatingActionButton.hide()
+                        mHomeActivityBinding.floatingActionButton.visibility=View.GONE
                     } else
                     {
                         mHomeActivityBinding.progressBar.visibility = View.GONE
-                        mHomeActivityBinding.floatingActionButton.show()
+                        mHomeActivityBinding.floatingActionButton.visibility=View.VISIBLE
                     }
                 })
                 mHomeActivityViewModel.mShowNetworkError.observe(this, Observer { bt ->
                     if (bt==true)
                     {
-                        showAlertDialog();  // showing alert dialog if there is not internet connection
+                        showAlertDialog(AlertDialogTypeEnum.NETWORK_ERROR);  // showing alert dialog if there is not internet connection
                     }
                 })
-
         }catch (e: Exception)
         {
             Log.e("$aTag  initializeObservers",e.toString())
         }
-
     }
 
-    private fun showAlertDialog()
+    private fun showAlertDialog(alertType : AlertDialogTypeEnum)
     {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Alert")
-        builder.setMessage("You are not connected to a network.Please establish an internet connection and try again")
-        builder.setPositiveButton(R.string.dialog_ok) { dialog, which ->
-            dialog.dismiss()
-            finish()
+        try {
+
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Alert")
+            if(alertType==AlertDialogTypeEnum.NETWORK_ERROR)
+            {
+                builder.setMessage("You are not connected to a network.Please establish an internet connection and try again")
+                builder.setPositiveButton(R.string.dialog_ok) { dialog, which ->
+                    dialog.dismiss()
+                    finish()
+                }
+            }else if(alertType==AlertDialogTypeEnum.APP_EXIT_CONFRM)
+            {
+                builder.setMessage("Do you want to exit that app?")
+                builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                    dialog.dismiss()
+                    finish()
+                }
+                builder.setNegativeButton(android.R.string.no) { dialog, which ->
+
+                    dialog.dismiss()
+                }
+            }
+            builder.show()
+
+        }catch (e : Exception)
+        {
+            Log.e("$aTag  showAlertDialog",e.toString())
         }
-        builder.show()
+    }
+    override fun onBackPressed()
+    {
+        showAlertDialog(AlertDialogTypeEnum.APP_EXIT_CONFRM)
     }
 }

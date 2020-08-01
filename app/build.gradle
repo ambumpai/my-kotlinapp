@@ -39,16 +39,17 @@ dependencies {
     androidTestImplementation "com.android.support.test:runner:$runnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
 
-    //design support library
-    implementation "com.android.support:design:$supportdesignVersion"
+
 
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$gsonVersion"
 
+
     //glide
     implementation "com.github.bumptech.glide:glide:$glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glidecompilerVersion"
+
 
     //lifecycle
     implementation "android.arch.lifecycle:extensions:$extensionsversion"
