@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+                name="countrydata"
+                type="com.app.kotlin.kotlintest.model.CountryData" />
+    </data>
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/silvercolor"
+            android:padding="5dp"
+           >
+
+        <TextView
+                android:id="@+id/countrydata_title_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:height="25dp"
+                android:gravity="center_vertical"
+                android:text="@{countrydata.title}"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18dp"
+                 />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="top"
+        >
+
+
+        <TextView
+                android:id="@+id/countrydata_title_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/countrydata_title_textview"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@{countrydata.description}"
+                android:textColor="@android:color/black"
+                 />
+
+        <ImageView
+                android:id="@+id/countrydataimage"
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:scaleType="fitXY"
+                app:imageThumb="@{countrydata.imageHref}"
+              />
+
+    </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+</layout>
